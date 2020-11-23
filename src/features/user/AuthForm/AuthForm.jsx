@@ -7,7 +7,7 @@ const AuthForm = () => {
       header="Авторизация" 
       buttonTitle="Войти" 
       linkTitle="Нет акаунта?" 
-      linkTo="/reg"
+      linkTo="/signup"
     >
       <FormInput placeholder="Логин" />
       <FormInput placeholder="Пароль" type="password" />

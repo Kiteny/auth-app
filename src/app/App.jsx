@@ -7,9 +7,9 @@ const App = () => {
   return (
     <Router>
       <Switch>
-        <Route path="/auth" component={AuthForm} exact/>
-        <Route path="/reg" component={RegForm} exact/>
-        <Redirect to="/auth"/>
+        <Route path="/login" component={AuthForm} exact/>
+        <Route path="/signup" component={RegForm} exact/>
+        <Redirect to="/login"/>
       </Switch>
     </Router>
   );

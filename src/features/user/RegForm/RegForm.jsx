@@ -7,7 +7,7 @@ const RegForm = () => {
       header="Регистрация" 
       buttonTitle="Регистрация"
       linkTitle="Есть акаунт?" 
-      linkTo="/auth"
+      linkTo="/login"
     >
       <FormInput placeholder="Имя" />
       <FormInput placeholder="Фамилия" />
