@@ -14,4 +14,27 @@ export default createGlobalStyle`
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
       monospace;
   }
+
+  *, *::after, *::before {
+    box-sizing: border-box;
+
+    margin: 0;
+    padding: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6, p {
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+  }
+
+  button {
+    padding: 0;
+    margin: 0;
+
+    background: none;
+    border: none;
+    
+    cursor: pointer;
+  }
 `;
