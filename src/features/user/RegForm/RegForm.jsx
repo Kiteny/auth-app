@@ -18,7 +18,7 @@ const RegForm = () => {
     <Form 
       header="Регистрация" 
       buttonTitle="Регистрация"
-      linkTitle="Есть акаунт?" 
+      linkTitle="Есть аккаунт?" 
       linkTo="/login"
       onSubmit={ handleSubmit(onSubmit) }
     >

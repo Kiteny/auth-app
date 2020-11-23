@@ -18,7 +18,7 @@ const AuthForm = () => {
     <Form
       header="Авторизация" 
       buttonTitle="Войти" 
-      linkTitle="Нет акаунта?" 
+      linkTitle="Нет аккаунта?" 
       linkTo="/signup"
       onSubmit={ handleSubmit(onSubmit) }
     >
