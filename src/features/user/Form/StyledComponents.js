@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Button from '../../../ui/Button';
@@ -31,4 +32,11 @@ export const FormInput = styled(Input)`
 
 export const FormButton = styled(Button)`
   width: 80%;
+  margin-bottom: 10px;
+`;
+
+export const FormLink = styled(Link)`
+  display: block;
+  color:  #9999FF;
+  text-decoration: none;
 `;
