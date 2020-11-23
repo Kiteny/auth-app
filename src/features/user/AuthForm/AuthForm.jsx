@@ -1,16 +1,40 @@
 import React from 'react';
-import Form, { FormInput } from '../Form';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+import Form, { ErrorMessage, FormInput } from '../Form';
+import validationSchema from './validationSchema';
 
 const AuthForm = () => {
+  const { register, handleSubmit, errors } = useForm({
+    resolver: yupResolver(validationSchema)
+  });
+
+  const onSubmit = (userData) => {
+    console.log(userData);
+  }
+
   return (
-    <Form 
+    <Form
       header="Авторизация" 
       buttonTitle="Войти" 
       linkTitle="Нет акаунта?" 
       linkTo="/signup"
+      onSubmit={ handleSubmit(onSubmit) }
     >
-      <FormInput placeholder="Логин" />
-      <FormInput placeholder="Пароль" type="password" />
+      <ErrorMessage>{errors.email?.message}</ErrorMessage>
+      <FormInput 
+        placeholder="Email" 
+        name="email"
+        ref={register}
+      />
+      <ErrorMessage>{errors.password?.message}</ErrorMessage>
+      <FormInput 
+        placeholder="Пароль" 
+        type="password"
+        name="password" 
+        ref={register} 
+      />
     </Form>
   );
 }
