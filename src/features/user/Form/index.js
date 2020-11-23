@@ -1,4 +1,4 @@
 import Form from "./Form";
-export { FormInput } from "./StyledComponents";
+export { FormInput, ErrorMessage } from "./StyledComponents";
 
 export default Form;

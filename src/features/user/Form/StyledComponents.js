@@ -27,7 +27,7 @@ export const InputsContainer = styled.div`
 `;
 
 export const FormInput = styled(Input)`
-  margin: 15px 0;
+  margin-bottom: 20px;
 `;
 
 export const FormButton = styled(Button)`
@@ -39,4 +39,13 @@ export const FormLink = styled(Link)`
   display: block;
   color:  #9999FF;
   text-decoration: none;
+`;
+
+export const ErrorMessage = styled.p`
+  height: 0px;
+  transform: translateY(-18px);
+
+  text-align: left;
+  font-size: 14px;
+  color: #CC3300;
 `;
