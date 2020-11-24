@@ -1,17 +1,37 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form/';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import Form, { FormInput, ErrorMessage } from '../Form';
 import ValidationSchema from './validationSchema';
+import { userActions, userSelectors } from '../_userSlice_';
+import { Redirect } from 'react-router-dom';
 
 const RegForm = () => {
+  const status = useSelector(userSelectors.status);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(userActions.resetStatus());
+  }, []);
+
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(ValidationSchema)
   });
   
   const onSubmit = (userData) => {
-    console.log(userData);
+    dispatch(userActions.signUp(userData));
+  }
+
+  useEffect(() => {
+    if (status !== 'success') return;
+
+    alert('Регистрация успешна!');
+  }, [status]);
+
+  if (status === 'success') {
+    return <Redirect to="/login"/>
   }
 
   return (

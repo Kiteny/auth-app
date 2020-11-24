@@ -1,3 +1,1 @@
-import { userReducer, userActions } from './userSlice';
-
-export { userReducer, userActions }
+export { userReducer, userActions, userSelectors } from './userSlice';
