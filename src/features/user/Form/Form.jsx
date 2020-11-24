@@ -5,6 +5,7 @@ import { Container, Header, FormButton, InputsContainer, FormLink } from './Styl
 import Loader from '../../../ui/Loader/Loader';
 
 const Form = ({ header, buttonTitle, children, onSubmit, linkTitle, linkTo, isLoading }) => {
+  
   return (
     <Container>
       <form onSubmit={onSubmit}>
@@ -15,12 +16,11 @@ const Form = ({ header, buttonTitle, children, onSubmit, linkTitle, linkTo, isLo
 
         {
           !isLoading 
-            ? (
+            ? 
               <>
                 <FormButton>{buttonTitle}</FormButton>
                 <FormLink to={linkTo}>{linkTitle}</FormLink>
               </>
-            )
             :
               <Loader />
         }
