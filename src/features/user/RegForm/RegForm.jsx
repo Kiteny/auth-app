@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form/';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -32,6 +32,13 @@ const RegForm = () => {
       <FormInput 
         placeholder="Фамилия" 
         name="surname"
+        ref={register}
+      />
+      <ErrorMessage>{errors.phone?.message}</ErrorMessage>
+      <FormInput 
+        placeholder="Номер телефона"
+        name="phone"
+        type="tel"
         ref={register}
       />
       <ErrorMessage>{errors.email?.message}</ErrorMessage>

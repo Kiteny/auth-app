@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import "yup-phone";
 
 export default yup.object().shape({
   name: yup
@@ -8,6 +9,10 @@ export default yup.object().shape({
   surname: yup
     .string()
     .max(50, 'Не более 50 символов')
+    .required('Обязательное поле'),
+  phone: yup
+    .string()
+    .phone('RU', false, 'Не валидный номер')
     .required('Обязательное поле'),
   email: yup.string().email('Неверный формат email').required('Обязательное поле'),
   password: yup
