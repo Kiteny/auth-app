@@ -28,5 +28,6 @@ export default {
         password,
       }
     });
-  }
+  },
+  getRefreshToken: () => localStorage.getItem('refresh_token'),
 }
