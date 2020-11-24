@@ -24,7 +24,14 @@ const RegForm = () => {
   });
   
   const onSubmit = (userData) => {
-    dispatch(userActions.signUp(userData));
+    const fromattedPhone = ('+' + userData.phone.match(/\d/g).join(''));
+
+    dispatch(
+      userActions.signUp({ 
+        ...userData, 
+        phone: fromattedPhone,
+      })
+    );
   }
 
   useEffect(() => {
