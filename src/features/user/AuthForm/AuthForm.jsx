@@ -27,7 +27,6 @@ const AuthForm = () => {
   }
 
   useEffect(() => {
-    console.log(status);
     switch (status) {
       case 'idle': 
         setIsStatusReseting(false);
