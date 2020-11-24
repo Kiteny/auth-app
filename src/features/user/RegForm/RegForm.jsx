@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form/';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,6 +11,7 @@ import { userActions, userSelectors } from '../_userSlice_';
 const RegForm = () => {
   const status = useSelector(userSelectors.status);
   const userErrors = useSelector(userSelectors.errors);
+  const [isStatusReseting, setIsStatusReseting] = useState(true);
 
   const dispatch = useDispatch();
 
@@ -28,17 +29,21 @@ const RegForm = () => {
 
   useEffect(() => {
     switch (status) {
+      case 'idle': 
+        setIsStatusReseting(false);
       case 'success':
-        alert('Регистрация успешна!');
+        !isStatusReseting && alert('Регистрация успешна!');
         return;
       case 'failure':
-        processErrors(userErrors, (err) => alert(`Ошибка регистрации: ${err}`));
+        !isStatusReseting && processErrors(
+          userErrors, 
+          (err) => alert(`Ошибка регистрации: ${err}`)
+        );
         return;
     }
-
   }, [status, userErrors]);
 
-  if (status === 'success') {
+  if (status === 'success' && !isStatusReseting) {
     return <Redirect to="/login"/>
   }
 
