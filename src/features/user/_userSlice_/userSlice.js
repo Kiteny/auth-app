@@ -18,11 +18,12 @@ const signUp = createAsyncThunk(
 
 const signIn = createAsyncThunk(
   'user/signIn',
-  async ({email, password}, { rejectWithValue }) => {
+  async ({ email, password }, { rejectWithValue }) => {
     try {
-      await userApi.signIn(email, password);
+      const response = await userApi.signIn(email, password);
+      return response.data;
     } catch (e) {
-      if (e.isAxiosError && e.response.status === 400) {
+      if (e.isAxiosError && e.response.status === 401) {
         return rejectWithValue(e.response.data);
       }
 
@@ -42,9 +43,11 @@ const userSlice = createSlice({
   reducers: {
     resetStatus(state) {
       state.status = 'idle';
+      state.errors = null;
     }
   },
   extraReducers: {
+    // SignUp
     [signUp.pending](state) {
       state.status = 'loading';
       state.errors = null;
@@ -53,6 +56,31 @@ const userSlice = createSlice({
       state.status = 'success';
     },
     [signUp.rejected](state, action) {
+      const { error, payload } = action;
+
+      state.status = 'failure';
+
+      if (error.message === 'Rejected') {
+        state.errors = payload;
+      } else {
+        unwrapResult(action);
+      }
+    },
+
+    // SignIn
+    [signIn.pending](state) {
+      state.status = 'loading';
+      state.errors = null;
+    },
+    [signIn.fulfilled](state, { payload }) {
+      state.status = 'success';
+      state.isSignIn = true;
+      
+      userApi.setAccessToken(payload.access);
+      userApi.setRefreshToken(payload.refresh);
+      userApi.setСlientId(payload.client_id);
+    },
+    [signIn.rejected](state, action) {
       const { error, payload } = action;
 
       state.status = 'failure';
@@ -79,8 +107,8 @@ export const userActions = {
    */
   signUp: (data) => signUp(data),
   /**
-   * @param {string} email
-   * @param {password} email
+   * @param {string} email,
+   * @param {string} password,
    */
   signIn: (email, password) => signIn({ email, password }),
   ...userSlice.actions,
@@ -88,4 +116,5 @@ export const userActions = {
 export const userSelectors = {
   status: (state) => state.user.status,
   errors: (state) => state.user.errors,
+  isSignIn: (state) => state.user.isSignIn,
 }
