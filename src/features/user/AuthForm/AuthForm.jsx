@@ -27,12 +27,10 @@ const AuthForm = () => {
   }
 
   useEffect(() => {
+    console.log(status);
     switch (status) {
       case 'idle': 
         setIsStatusReseting(false);
-        return;
-      case 'success':
-        !isStatusReseting && alert('Авторизация успешна!');
         return;
       case 'failure':
         !isStatusReseting && alert(`Ошибка авторизации: ${userErrors.detail}`);
