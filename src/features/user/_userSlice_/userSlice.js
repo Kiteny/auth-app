@@ -16,13 +16,28 @@ const signUp = createAsyncThunk(
   }
 );
 
+const signIn = createAsyncThunk(
+  'user/signIn',
+  async ({email, password}, { rejectWithValue }) => {
+    try {
+      await userApi.signIn(email, password);
+    } catch (e) {
+      if (e.isAxiosError && e.response.status === 400) {
+        return rejectWithValue(e.response.data);
+      }
+
+      throw e;
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState: {
     userData: null,
     isSignIn: !!userApi.getRefreshToken(),
     status: 'idle',
-    error: null,
+    errors: null,
   },
   reducers: {
     resetStatus(state) {
@@ -32,7 +47,7 @@ const userSlice = createSlice({
   extraReducers: {
     [signUp.pending](state) {
       state.status = 'loading';
-      state.error = null;
+      state.errors = null;
     },
     [signUp.fulfilled](state) {
       state.status = 'success';
@@ -41,9 +56,9 @@ const userSlice = createSlice({
       const { error, payload } = action;
 
       state.status = 'failure';
-      
+
       if (error.message === 'Rejected') {
-        state.error = payload;
+        state.errors = payload;
       } else {
         unwrapResult(action);
       }
@@ -63,8 +78,14 @@ export const userActions = {
    * }} data
    */
   signUp: (data) => signUp(data),
+  /**
+   * @param {string} email
+   * @param {password} email
+   */
+  signIn: (email, password) => signIn({ email, password }),
   ...userSlice.actions,
 };
 export const userSelectors = {
   status: (state) => state.user.status,
+  errors: (state) => state.user.errors,
 }

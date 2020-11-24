@@ -2,14 +2,16 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form/';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Redirect } from 'react-router-dom';
 
 import Form, { FormInput, ErrorMessage } from '../Form';
 import ValidationSchema from './validationSchema';
 import { userActions, userSelectors } from '../_userSlice_';
-import { Redirect } from 'react-router-dom';
 
 const RegForm = () => {
   const status = useSelector(userSelectors.status);
+  const userErrors = useSelector(userSelectors.errors);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,10 +27,16 @@ const RegForm = () => {
   }
 
   useEffect(() => {
-    if (status !== 'success') return;
+    switch (status) {
+      case 'success':
+        alert('Регистрация успешна!');
+        return;
+      case 'failure':
+        processErrors(userErrors, (err) => alert(`Ошибка регистрации: ${err}`));
+        return;
+    }
 
-    alert('Регистрация успешна!');
-  }, [status]);
+  }, [status, userErrors]);
 
   if (status === 'success') {
     return <Redirect to="/login"/>
@@ -84,6 +92,16 @@ const RegForm = () => {
       />
     </Form>
   );
+}
+
+function processErrors(error, callback) {
+  for (let prop in error) {
+    const isOwn = error.hasOwnProperty(prop);
+    
+    if (isOwn && Array.isArray(error[prop])) {
+      error[prop].forEach(callback);
+    }
+  }
 }
 
 export default RegForm;
