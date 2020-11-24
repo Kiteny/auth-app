@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types'
 
 import { Container, Header, FormButton, InputsContainer, FormLink } from './StyledComponents';
+import Loader from '../../../ui/Loader/Loader';
 
-const Form = ({ header, buttonTitle, children, onSubmit, linkTitle, linkTo }) => {
+const Form = ({ header, buttonTitle, children, onSubmit, linkTitle, linkTo, isLoading }) => {
   return (
     <Container>
       <form onSubmit={onSubmit}>
@@ -12,8 +13,17 @@ const Form = ({ header, buttonTitle, children, onSubmit, linkTitle, linkTo }) =>
           {children}
         </InputsContainer>
 
-        <FormButton>{buttonTitle}</FormButton>
-        <FormLink to={linkTo}>{linkTitle}</FormLink>
+        {
+          !isLoading 
+            ? (
+              <>
+                <FormButton>{buttonTitle}</FormButton>
+                <FormLink to={linkTo}>{linkTitle}</FormLink>
+              </>
+            )
+            :
+              <Loader />
+        }
       </form>
     </Container>
   )
@@ -26,6 +36,7 @@ Form.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   linkTitle: PropTypes.string.isRequired,
   linkTo: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool,
 }
 
 export default Form;

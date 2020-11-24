@@ -21,6 +21,7 @@ const RegForm = () => {
       linkTitle="Есть аккаунт?" 
       linkTo="/login"
       onSubmit={ handleSubmit(onSubmit) }
+      isLoading={status === 'loading'}
     >
       <ErrorMessage>{errors.name?.message}</ErrorMessage>
       <FormInput 
