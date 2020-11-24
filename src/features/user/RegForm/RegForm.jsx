@@ -38,6 +38,7 @@ const RegForm = () => {
     switch (status) {
       case 'idle': 
         setIsStatusReseting(false);
+        return;
       case 'success':
         !isStatusReseting && alert('Регистрация успешна!');
         return;
