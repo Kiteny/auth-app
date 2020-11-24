@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import userApi from '../../../api/userApi';
+import { userActions } from '../_userSlice_';
 import Item from './components/Item';
 import { Container, Header, StyledLink, Table, TopBar } from './StyledComponents';
 
@@ -10,6 +11,7 @@ const UserProfile = () => {
 
   const onClick = async () => {
     // console.log(await userApi.fetchUserProfile());
+    dispatch(userActions.logout());
   }
 
   return (

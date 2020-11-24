@@ -32,6 +32,15 @@ const signIn = createAsyncThunk(
   }
 );
 
+const logout = createAsyncThunk(
+  'user/logout',
+  () => {
+    userApi.setAccessToken('');
+    userApi.setRefreshToken('');
+    userApi.setСlientId('');
+  }
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState: {
@@ -44,7 +53,7 @@ const userSlice = createSlice({
     resetStatus(state) {
       state.status = 'idle';
       state.errors = null;
-    }
+    },
   },
   extraReducers: {
     // SignUp
@@ -91,6 +100,12 @@ const userSlice = createSlice({
         unwrapResult(action);
       }
     },
+    
+    //logout
+    [logout.fulfilled](state) {
+      state.isSignIn = false;
+      state.userData = null;
+    }
   }
 });
 
@@ -111,6 +126,7 @@ export const userActions = {
    * @param {string} password,
    */
   signIn: (email, password) => signIn({ email, password }),
+  logout,
   ...userSlice.actions,
 };
 export const userSelectors = {
