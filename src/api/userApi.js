@@ -30,4 +30,9 @@ export default {
     });
   },
   getRefreshToken: () => localStorage.getItem('refresh_token'),
+  setRefreshToken: (token) => localStorage.setItem('refresh_token', token),
+  getAccessToken: () => localStorage.getItem('access_token'),
+  setAccessToken: (token) => localStorage.setItem('access_token', token),
+  getСlientId: () => localStorage.getItem('client_id'),
+  setСlientId: (token) => localStorage.setItem('client_id', token),
 }
