@@ -32,6 +32,16 @@ const signIn = createAsyncThunk(
   }
 );
 
+const fetchProfile = createAsyncThunk(
+  'user/fetchProfile',
+  async (_, { dispatch }) => {
+    const response = await userApi.fetchUserProfile(() => {
+      dispatch(logout());
+    });
+    return response.data;
+  }
+);
+
 const logout = createAsyncThunk(
   'user/logout',
   () => {
@@ -94,11 +104,25 @@ const userSlice = createSlice({
 
       state.status = 'failure';
 
-      if (error.message === 'Rejected') {
+      if (error.message !== 'Rejected') {
         state.errors = payload;
       } else {
         unwrapResult(action);
       }
+    },
+
+    // fetchProfile
+    [fetchProfile.pending](state) {
+      state.status = 'loading';
+      state.errors = null;
+    },
+    [fetchProfile.fulfilled](state, { payload }) {
+      console.log('f');
+      state.status = 'success';
+      state.userData = payload;
+    },
+    [fetchProfile.rejected](state, action) { 
+      unwrapResult(action);
     },
     
     //logout
@@ -127,10 +151,12 @@ export const userActions = {
    */
   signIn: (email, password) => signIn({ email, password }),
   logout,
+  fetchProfile,
   ...userSlice.actions,
 };
 export const userSelectors = {
   status: (state) => state.user.status,
   errors: (state) => state.user.errors,
   isSignIn: (state) => state.user.isSignIn,
+  userData: (state) => state.user.userData,
 }
