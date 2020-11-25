@@ -65,7 +65,7 @@ export default {
       } catch (e) {
         if (e.isAxiosError && e.response.status === 401 || e.message === 'stoptry'){
           failCallback();
-          return;
+          return {};
         }
 
         throw e;

@@ -12,7 +12,7 @@ const signUp = createAsyncThunk(
         return rejectWithValue(e.response.data);
       }
 
-      dispatch(appActions.error(e))
+      dispatch(appActions.error(e.message))
       throw e;
     }
   }
@@ -28,8 +28,7 @@ const signIn = createAsyncThunk(
       if (e.isAxiosError && e.response.status === 401) {
         return rejectWithValue(e.response.data);
       }
-
-      dispatch(appActions.error(e))
+      dispatch(appActions.error(e.message))
       throw e;
     }
   }
@@ -44,7 +43,7 @@ const fetchProfile = createAsyncThunk(
       });
       return response.data;
     } catch (e) {
-      dispatch(appActions.error(e))
+      dispatch(appActions.error(e.message))
       throw e;
     }
   }

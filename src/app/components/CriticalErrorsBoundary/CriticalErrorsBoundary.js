@@ -15,8 +15,6 @@ class CriticalErrosBoundary extends React.Component {
     const { children, appError } = this.props;
     const { error } = this.state;
 
-    console.log(children);
-
     return error || appError ? 'Что-то пошло не так!' : children;
   }
 }
@@ -26,7 +24,7 @@ CriticalErrosBoundary.propTypes = {
     PropTypes.node,
     PropTypes.arrayOf(PropTypes.node),
   ]),
-  appError: PropTypes.object,
+  appError: PropTypes.string,
 }
 
 const mapStateToProps = (state) => ({
