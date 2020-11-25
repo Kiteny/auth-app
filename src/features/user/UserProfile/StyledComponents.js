@@ -1,4 +1,6 @@
+import React from 'react'
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 export const Container = styled.div`
   max-width: 600px;
@@ -13,13 +15,6 @@ export const Header = styled.h2`
   font-size: 25px;
 
   text-transform: uppercase;
-`;
-
-export const Table = styled.table`
-  border-collapse: collapse;
-  width: 100%;
-
-  border: 1px solid #9999FF;
 `;
 
 export const Row = styled.tr`
@@ -48,3 +43,26 @@ export const StyledLink = styled.a`
 
   padding: 5px;
 `;
+
+
+const StyledTable = styled.table`
+  border-collapse: collapse;
+  width: 100%;
+
+  border: 1px solid #9999FF;
+`;
+
+export const Table = ({ children }) => {
+  return (
+    <StyledTable>
+      <tbody>{children}</tbody>
+    </StyledTable>
+  );
+}
+
+Table.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.arrayOf(PropTypes.node),
+  ]),
+}
