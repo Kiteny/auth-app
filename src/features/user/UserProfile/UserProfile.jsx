@@ -20,6 +20,8 @@ const UserProfile = () => {
     dispatch(userActions.logout());
   }
 
+  console.log(userData);
+
   return (
     <Container>
       <Header>Профиль</Header>
