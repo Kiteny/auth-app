@@ -3,19 +3,16 @@ import { BASE_URL, COUNTRY_KEY, INVITED_BY } from './constansts';
 
 axios.defaults.baseURL = BASE_URL;
 
-const authAxios = axios.create();
+axios.interceptors.request.use(async (request) => {
+  let accessToken = userApi.getAccessToken();
 
-authAxios.interceptors.request.use(async (request) => {
-  console.log(request);
-  let accessToken = this.getAccessToken();
-  request.headers = {
-    ...request.headers,
-    Authorization: `Bearer ${accessToken}`,
+  if (accessToken) {
+    request.headers.Authorization = `Bearer ${accessToken}`;
   }
   return request;
 });
 
-export default {
+const userApi = {
   signUp({ email, password, phone, name, surname }) {
     return axios('/clients/create/', {
       method: 'POST',
@@ -56,7 +53,7 @@ export default {
   async fetchUserProfile(failCallback) {
     const clientId = this.getСlientId();
 
-    authAxios.interceptors.response.use(null, async (error) => {
+    const interceptor = axios.interceptors.response.use(null, async (error) => {
       if (error.request.status !== 401) {
         return Promise.reject(error);
       }
@@ -81,9 +78,13 @@ export default {
     });
 
     function fetchData() {
-      return authAxios(`/clients/${clientId}/`, {
-        method: 'POST',
-      });
+      try {
+        return axios(`/clients/${clientId}/`, {
+          method: 'POST',
+        });
+      } finally {
+        axios.interceptors.response.eject(interceptor);
+      }
     }
 
     return fetchData();
@@ -95,3 +96,5 @@ export default {
   getСlientId:      () =>       localStorage.getItem('client_id'),
   setСlientId:      (id) =>     localStorage.setItem('client_id', id),
 }
+
+export default userApi;
