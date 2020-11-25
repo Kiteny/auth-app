@@ -16,8 +16,11 @@
     },
     "plugins": [
         "react",
-        "babel",
+        "babel"
     ],
+    "parser": "babel-eslint",
     "rules": {
+      "strict": 0,
+      "no-prototype-builtins": "off"
     }
 }
