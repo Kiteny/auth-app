@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-d
 import { AuthForm, RegForm } from '../features/user';
 import UserProfile from '../features/user/UserProfile/UserProfile';
 import { userSelectors } from '../features/user/_userSlice_';
+import CriticalErrosBoundary from './components/CriticalErrorsBoundary/CriticalErrorsBoundary';
 
 const App = () => {
   const isSignIn = useSelector(userSelectors.isSignIn);
@@ -29,11 +30,13 @@ const App = () => {
   }
 
   return (
-    <Router>
-      <Switch>
-        {routes}
-      </Switch>
-    </Router>
+    <CriticalErrosBoundary>
+      <Router>
+        <Switch>
+          {routes}
+        </Switch>
+      </Router>
+    </CriticalErrosBoundary>
   );
 }
 

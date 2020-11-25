@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice, unwrapResult } from "@reduxjs/toolkit";
 import userApi from "../../../api/userApi";
+import { appActions } from '../../../app';
 
 const signUp = createAsyncThunk(
   'user/signUp',
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
       await userApi.signUp(payload);
     } catch (e) {
@@ -11,6 +12,7 @@ const signUp = createAsyncThunk(
         return rejectWithValue(e.response.data);
       }
 
+      dispatch(appActions.error(e))
       throw e;
     }
   }
@@ -18,7 +20,7 @@ const signUp = createAsyncThunk(
 
 const signIn = createAsyncThunk(
   'user/signIn',
-  async ({ email, password }, { rejectWithValue }) => {
+  async ({ email, password }, { rejectWithValue, dispatch }) => {
     try {
       const response = await userApi.signIn(email, password);
       return response.data;
@@ -27,6 +29,7 @@ const signIn = createAsyncThunk(
         return rejectWithValue(e.response.data);
       }
 
+      dispatch(appActions.error(e))
       throw e;
     }
   }
@@ -35,10 +38,15 @@ const signIn = createAsyncThunk(
 const fetchProfile = createAsyncThunk(
   'user/fetchProfile',
   async (_, { dispatch }) => {
-    const response = await userApi.fetchUserProfile(() => {
-      dispatch(logout());
-    });
-    return response.data;
+    try {
+      const response = await userApi.fetchUserProfile(() => {
+        dispatch(logout());
+      });
+      return response.data;
+    } catch (e) {
+      dispatch(appActions.error(e))
+      throw e;
+    }
   }
 );
 
@@ -104,7 +112,7 @@ const userSlice = createSlice({
 
       state.status = 'failure';
 
-      if (error.message !== 'Rejected') {
+      if (error.message === 'Rejected') {
         state.errors = payload;
       } else {
         unwrapResult(action);
@@ -117,7 +125,6 @@ const userSlice = createSlice({
       state.errors = null;
     },
     [fetchProfile.fulfilled](state, { payload }) {
-      console.log('f');
       state.status = 'success';
       state.userData = payload;
     },
