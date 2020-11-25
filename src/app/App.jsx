@@ -2,10 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 
-import { AuthForm, RegForm } from '../features/user';
-import UserProfile from '../features/user/UserProfile/UserProfile';
-import { userSelectors } from '../features/user/_userSlice_';
-import CriticalErrosBoundary from './components/CriticalErrorsBoundary/CriticalErrorsBoundary';
+import { AuthForm, RegForm, userSelectors, UserProfile } from '../features/user';
+import CriticalErrosBoundary from './components/CriticalErrorsBoundary';
 
 const App = () => {
   const isSignIn = useSelector(userSelectors.isSignIn);
