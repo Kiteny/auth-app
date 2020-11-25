@@ -41,6 +41,43 @@ export default {
 
     this.setAccessToken(response.data.access);
   },
+  async fetchUserProfile(failCallback) {
+    const axiosInst = axios.create();
+    const clientId = this.getСlientId();
+    let accessToken = this.getAccessToken();
+
+    axiosInst.interceptors.response.use(null, async (error) => {
+      if (error.request.status !== 401) {
+        return Promise.reject(error);
+      }
+
+      try {
+        if (fetchData.stopTry) {
+          throw new Error();
+        } 
+
+        fetchData.stopTry = true;
+
+        await this.refreshAccessToken();
+        accessToken = this.getAccessToken();
+        
+        return fetchData();
+      } catch (e) {
+        failCallback();
+      }
+    });
+
+    function fetchData() {
+      return axiosInst(`/clients/${clientId}/`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    }
+
+    return fetchData();
+  },
   getRefreshToken:  () =>       localStorage.getItem('refresh_token'),
   setRefreshToken:  (token) =>  localStorage.setItem('refresh_token', token),
   getAccessToken:   () =>       localStorage.getItem('access_token'),
