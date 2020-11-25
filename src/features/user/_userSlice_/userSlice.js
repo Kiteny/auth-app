@@ -23,7 +23,11 @@ const signIn = createAsyncThunk(
   async ({ email, password }, { rejectWithValue, dispatch }) => {
     try {
       const response = await userApi.signIn(email, password);
-      return response.data;
+      const { data } = response;
+
+      userApi.setAccessToken(data.access);
+      userApi.setRefreshToken(data.refresh);
+      userApi.setСlientId(data.client_id);
     } catch (e) {
       if (e.isAxiosError && e.response.status === 401) {
         return rejectWithValue(e.response.data);
@@ -98,13 +102,9 @@ const userSlice = createSlice({
       state.status = 'loading';
       state.errors = null;
     },
-    [signIn.fulfilled](state, { payload }) {
+    [signIn.fulfilled](state) {
       state.status = 'success';
       state.isSignIn = true;
-      
-      userApi.setAccessToken(payload.access);
-      userApi.setRefreshToken(payload.refresh);
-      userApi.setСlientId(payload.client_id);
     },
     [signIn.rejected](state, action) {
       const { error, payload } = action;
