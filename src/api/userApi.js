@@ -29,10 +29,22 @@ export default {
       }
     });
   },
-  getRefreshToken: () => localStorage.getItem('refresh_token'),
-  setRefreshToken: (token) => localStorage.setItem('refresh_token', token),
-  getAccessToken: () => localStorage.getItem('access_token'),
-  setAccessToken: (token) => localStorage.setItem('access_token', token),
-  getСlientId: () => localStorage.getItem('client_id'),
-  setСlientId: (token) => localStorage.setItem('client_id', token),
+  async refreshAccessToken() {
+    const refreshToken = this.getRefreshToken();
+
+    const response = await axios('/clients/token/refresh/', {
+      method: 'POST',
+      data: {
+        refresh: refreshToken,
+      }
+    });
+
+    this.setAccessToken(response.data.access);
+  },
+  getRefreshToken:  () =>       localStorage.getItem('refresh_token'),
+  setRefreshToken:  (token) =>  localStorage.setItem('refresh_token', token),
+  getAccessToken:   () =>       localStorage.getItem('access_token'),
+  setAccessToken:   (token) =>  localStorage.setItem('access_token', token),
+  getСlientId:      () =>       localStorage.getItem('client_id'),
+  setСlientId:      (id) =>     localStorage.setItem('client_id', id),
 }
