@@ -6,6 +6,8 @@ export const Container = styled.div`
   max-width: 600px;
   margin: 30px auto 0;
   padding: 10px;
+
+  text-align: center;
 `;
 
 export const Header = styled.h2`
@@ -50,6 +52,7 @@ const StyledTable = styled.table`
   width: 100%;
 
   border: 1px solid #9999FF;
+  text-align: left;
 `;
 
 export const Table = ({ children }) => {
