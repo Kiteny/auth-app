@@ -53,7 +53,7 @@ export default {
 
       try {
         if (fetchData.stopTry) {
-          throw new Error();
+          throw new Error('stoptry');
         } 
 
         fetchData.stopTry = true;
@@ -63,7 +63,12 @@ export default {
         
         return fetchData();
       } catch (e) {
-        failCallback();
+        if (e.isAxiosError && e.response.status === 401 || e.message === 'stoptry'){
+          failCallback();
+          return;
+        }
+
+        throw e;
       }
     });
 
